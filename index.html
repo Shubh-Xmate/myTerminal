@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Shubham's terminal</title>
+</head>
+<script src="js/jQuery.js"></script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="shortcut icon" href="static/images/favicon.ico" type="image/x-icon">
+<body class="terminal">
+  <div class="terminal-wrapper">
+    <div class="terminal-output">
+      <div>
+        <div style="width: 100%;">
+          <div style="color: #f4b400; text-align: center;">Welcome to Shubham's world</div><br><br>
+            <span>you can use <span style="color: #35bdb8"> 'help'</span> for list of commands</span><br><br>
+        </div>
+      </div>
+    </div>
+    <div class="cmd">
+      <span class="prompt">
+        <span class="user" id="root">root@guest: ~$ </span>
+      </span>
+      <span id="live" role="presentation"></span><span role="presentation" class="cursor">&nbsp;</span><span id="live2" role="presentation"></span><br>
+      <textarea autocapitalize="off" spellcheck="false" tabindex="1" rows="1" class="clipboard"></textarea>
+    </div>
+  </div>
+  <script src="js/documentReady.js"></script>
+  <script src="js/tabDefaultRemoval.js"></script>
+  <script src="js/outerAreaClick.js"></script>
+  <script src="js/keyCodeScript.js"></script>
+</body>
+</html>
