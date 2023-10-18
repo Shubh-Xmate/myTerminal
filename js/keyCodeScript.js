@@ -1,8 +1,8 @@
-var clear = $('.terminal-output').html();
-var array = [];
-var counter = -1;
-var username = 'shubham';
-var temp_command = ''; // to store the next command
+const clear = $('.terminal-output').html();
+let array = [];
+let counter = -1;
+let temp_command = ''; // to store the next command
+let command = '';
 
 function reset(){
   $('textarea').val('');
@@ -11,11 +11,57 @@ function reset(){
   $('.cursor').html('&nbsp');
 };
 
+function validateCommand(currCommand)
+{
+  // removing the front spaces;
+  let validCommandArr = currCommand.split(' ');
+
+  let validCommand = Array();
+
+  for(let i = 0; i < validCommandArr.length; i ++)
+    if(validCommandArr[i] != ' ' && validCommandArr[i] != '')
+      validCommand.push(validCommandArr[i]);
+
+  return validCommand;
+}
+
+function jsonLoadingError()
+{
+  $('.terminal-output').append('<div class="result"><div style="width: 100%;"><span>Getting Error while loading json file :|</span></div></div><br>');
+}
+
+function printError(errMessage)
+{
+  $('.terminal-output').append('<div class="result"><div style="width: 100%;"><span>' + errMessage + '</span></div></div><br>'); 
+}
+
+function addACommand(cdText)
+{
+  $('.terminal-output').append('<div class="command" role="presentation" aria-hidden="true"><div style="width: 100%;"><span class="user">world@' + window.username + ': ~' + '$ </span><span>' + cdText + '</span></div></div>');
+}
+
+function addAText(stringText)
+{
+  $('.terminal-output').append('<div class="result"><div style="width: 100%;"><span>' + stringText + '</span></div></div>');  
+}
+
+function noCommandFound()
+{
+  $('.terminal-output').append('<div class="command" role="presentation" aria-hidden="true"><div style="width: 100%;"><span class="user">world@' + window.username + ': ~' + '$ </span><span>' + command + '</span></div></div>');
+
+  if(command.length > 0) {
+    $('.terminal-output').append('<div class="result"><div style="width: 100%;"><span>No command \''+command+'\' found.</span></div></div>');
+  }
+
+  reset();
+}
+
 $('textarea').keyup(function(e) {
-  var command = $('textarea').val();
-  var i;
-  command = command.replace(/(\r\n|\n|\r)/gm,"");
-  var ctrl = e.ctrlKey||e.metaKey; 
+  let currCommand = $('textarea').val();
+  command = currCommand.replace(/(\r\n|\n|\r)/gm,"");
+  
+  let i;
+  let ctrl = e.ctrlKey||e.metaKey; 
 
   if(command.search('<')!=-1 || command.search('>')!=-1){
     alert('> or < not allowed.');
@@ -47,7 +93,7 @@ $('textarea').keyup(function(e) {
       counter-=1;
     }
     else{
-      var temp = $('textarea').focus().val();
+      let temp = $('textarea').focus().val();
       $('textarea').val('').val(temp);
     }
 
@@ -74,7 +120,7 @@ $('textarea').keyup(function(e) {
     }
 
     else{
-      var temp = $('textarea').focus().val();
+      let temp = $('textarea').focus().val();
       $('textarea').val('').val(temp);
     }
 
@@ -90,8 +136,8 @@ $('textarea').keyup(function(e) {
     // making the tab and right arrow to autocomplete the command
     if(e.keyCode == 9) e.keyCode = 39; 
 
-    var index = $('textarea').prop("selectionStart");
-    var prev = command.substring(0, index);
+    let index = $('textarea').prop("selectionStart");
+    let prev = command.substring(0, index);
     $('#live').html(prev);
 
     if((prev==command) && (i == -1 || array.length == 0)){
@@ -124,35 +170,46 @@ $('textarea').keyup(function(e) {
       $('.terminal-output').append(clear);
       reset();
     }
-
     else if(command=="help"){
-      $('.terminal-output').append('<div class="command" role="presentation" aria-hidden="true"><div style="width: 100%;"><span class="user">world@' + username + ': ~$ </span><span>' + command + '</span></div></div>');
-      $('.terminal-output').append(
-        '<div class="result">\
-          <div style="width: 100%;">\
-            <span>List of commands<br>\
-              clear - to clear screen<br>\
-              cd - to open the reference<br>\
-              ls - to list details<br>\
-              help - for list of commands (obviously)\
-            </span>\
-          </div>\
-        </div><br>');
+      $('.terminal-output').append('<div class="command" role="presentation" aria-hidden="true"><div style="width: 100%;"><span class="user">world@' + window.username + ': ~$ </span><span>' + command + '</span></div></div>');
+      addAText("List of commands");
+      addAText("clear - to clear screen");
+      addAText("cd - to open the reference");
+      addAText("ls - to list details");
+      addAText("help - for list of commands");
       reset();
     }
-    else if(command.split(" ")[0].trim()=="mkdir"){
-      console.log(command);
+    else if(command.split(" ")[0].trim()=="ls"){
+      const cmdAr = validateCommand(command);
+      const aboutMe = window.aboutMe;
+
+      if(cmdAr.length == 2 && cmdAr[1] == 'about')
+      {
+        addACommand(command);
+        addAText("Hi I'm " + aboutMe.fullName + ".");
+        for(let i = 0; i < aboutMe.generalIntro.length; i ++) {
+          addAText(aboutMe.generalIntro[i]);
+        }
+
+        addAText("<br> Relevant Profiles ")
+        addAText("GitHub : <a href=" + window.links.github.link + " target = \"_blank\">" + window.links.github.username + "</a>")
+        addAText("Codeforces : <a href=" + window.links.codeforces.link + " target = \"_blank\">" + window.links.codeforces.username + "</a>")
+        addAText("GFG : <a href=" + window.links.gfg.link + " target = \"_blank\">" + window.links.github.username + "</a>")
+
+        addAText("<br> Want to Connect ")
+        addAText("LinkedIn : <a href=" + window.links.linkedIn.link + " target = \"_blank\">" + window.links.github.username + "</a>")
+
+        addAText("<br> Mail me at ")
+        addAText("You can send me mail at <a href=mailto:" + window.links.email.link + " target = \"_blank\">" + window.links.email.username + "</a> for more information.")
+
+        reset();
+      }
+      else {
+        noCommandFound();
+      }
     }
     else{
-        $('.terminal-output').append('<div class="command" role="presentation" aria-hidden="true"><div style="width: 100%;"><span class="user">world@' + username + ': ~' + '$ </span><span>' + command + '</span></div></div>');
-
-        if(command.length > 0) {
-          $('.terminal-output').append('<div class="result"><div style="width: 100%;"><span>No command \''+command+'\' found.</span></div></div><br>');
-        }
-        $('textarea').val('');
-        $('#live').html('');
-        $('#live2').html('');
-        $('.cursor').html('&nbsp');
+        noCommandFound();
     }
 
     if(command.length>0){
@@ -173,7 +230,7 @@ $('textarea').keyup(function(e) {
   }
   else {
       $('#live').html(command);
-      var index = $('textarea').prop("selectionStart");
+      let index = $('textarea').prop("selectionStart");
       $('.cursor').html("<font color='yellow'>" + array[i].substring(index, index+1)  + "</font>" );
       $('#live2').html("<font color='yellow'>" + array[i].substring(index+1, array[i].length)  + "</font>" );
       if(command==array[i].substring(0, array[i].length))

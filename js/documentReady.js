@@ -1,4 +1,4 @@
 $(document).ready(function() {
-    $('#root').html('world@' + username + ': ~$ ');
+    $('#root').html('world@' + window.username + ': ~$ ');
     $('textarea').focus();
   });
