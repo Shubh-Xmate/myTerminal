@@ -194,10 +194,10 @@ $('textarea').keyup(function(e) {
         addAText("<br> Relevant Profiles ")
         addAText("GitHub : <a href=" + window.links.github.link + " target = \"_blank\">" + window.links.github.username + "</a>")
         addAText("Codeforces : <a href=" + window.links.codeforces.link + " target = \"_blank\">" + window.links.codeforces.username + "</a>")
-        addAText("GFG : <a href=" + window.links.gfg.link + " target = \"_blank\">" + window.links.github.username + "</a>")
+        addAText("GFG : <a href=" + window.links.gfg.link + " target = \"_blank\">" + window.links.gfg.username + "</a>")
 
         addAText("<br> Want to Connect ")
-        addAText("LinkedIn : <a href=" + window.links.linkedIn.link + " target = \"_blank\">" + window.links.github.username + "</a>")
+        addAText("LinkedIn : <a href=" + window.links.linkedIn.link + " target = \"_blank\">" + window.links.linkedIn.username + "</a>")
 
         addAText("<br> Mail me at ")
         addAText("You can send me mail at <a href=mailto:" + window.links.email.link + " target = \"_blank\">" + window.links.email.username + "</a> for more information.")
